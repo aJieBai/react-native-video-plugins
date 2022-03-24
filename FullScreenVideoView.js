@@ -26,6 +26,7 @@ export default class FullScreenVideoView extends Component {
           this.props.navigation.goBack();
         }}
         isFullscreen={true}
+        disableBack={true}
         source={{uri: this.state.path}}/>
     );
   }
