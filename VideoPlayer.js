@@ -486,8 +486,12 @@ export default class VideoPlayer extends Component {
     let state = this.state;
     console.log('_toggleFullscreen' + state.isFullscreen);
     if (!state.isFullscreen) {
-      typeof this.events.onEnterFullscreen === 'function' &&
-      this.events.onEnterFullscreen();
+      if (typeof this.events.onEnterFullscreen === "function") {
+        this.events.onEnterFullscreen();
+      }else{
+        this.props.navigation.navigate("FullScreenVideoView",{path:this.props.source.uri});
+      }
+
     } else {
       typeof this.events.onExitFullscreen === 'function' &&
       this.events.onExitFullscreen();

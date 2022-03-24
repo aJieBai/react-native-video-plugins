@@ -1,6 +1,6 @@
 {
-  "name": "react-native-video-controls",
-  "version": "1.0.0",
+  "name": "react-native-video-plugins",
+  "version": "1.0.1",
   "description": "A set of GUI controls for the react-native-video component",
   "license": "MIT",
   "main": "VideoPlayer.js",
@@ -14,10 +14,10 @@
     "lint": "eslint .",
     "test": "echo \"No test specified\" && exit 1"
   },
-  "author": "",
+  "author": "baijie1997",
   "repository": {
     "type": "git",
-    "url": "git@github.com:aJieBai/react-native-video-controls.git"
+    "url": "git+ssh://git@github.com/aJieBai/react-native-video-controls.git"
   },
   "dependencies": {
     "lodash": "^4.16.4"
@@ -29,5 +29,12 @@
   "devDependencies": {
     "@react-native-community/eslint-config": "^0.0.5",
     "eslint": "^6.5.1"
+  },
+  "bugs": {
+    "url": "https://github.com/aJieBai/react-native-video-controls/issues"
+  },
+  "homepage": "https://github.com/aJieBai/react-native-video-controls#readme",
+  "directories": {
+    "test": "test"
   }
 }
