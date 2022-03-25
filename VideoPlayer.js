@@ -218,7 +218,7 @@ export default class VideoPlayer extends Component {
     let state = this.state;
     if (!state.scrubbing) {
       state.currentTime = data.currentTime;
-
+      // console.log("当前时间", data.currentTime);
       if (!state.seeking) {
         const position = this.calculateSeekerPosition();
         this.setSeekerPosition(position);
@@ -255,25 +255,22 @@ export default class VideoPlayer extends Component {
   }
 
   /**
-   * It is suggested that you override this
-   * command so your app knows what to do.
-   * Either close the video or go to a
-   * new page.
+   * 播放结束，初始化组件位置
    */
   _onEnd() {
-    // console.log('_onEnd');
-    // this.methods.togglePlayPause();
-    let state = this.state;
-    this.seekTo(0);
-    this.setControlTimeout();
-    state.paused = true;
-    state.seeking = false;
-    //this.events.onEnd();
-    const position = this.calculateSeekerPosition();
-    this.setSeekerPosition(position);
-
-    typeof this.events.onPause === 'function' && this.events.onPause();
-    this.setState(state);
+    //将video组件视频跳进度调整到开始
+    this.player.ref.seek(0);
+    //初始化进度条，暂停按钮等
+    this.setState({
+      currentTime: 0,
+      seeking: false,
+      paused: true,
+      seekerFillWidth: 0,
+      seekerPosition: 0,
+      seekerOffset: 0,
+    });
+    //播放结束回调
+    typeof this.events.onEnd === 'function' && this.events.onEnd();
   }
 
   /**
@@ -598,8 +595,6 @@ export default class VideoPlayer extends Component {
   //修改进度条小球的位置
   setSeekerPosition(position = 0) {
     let state = this.state;
-    position = this.constrainToSeekerMinMax(position);
-
     state.seekerFillWidth = position;
     state.seekerPosition = position;
 
@@ -659,7 +654,7 @@ export default class VideoPlayer extends Component {
     let state = this.state;
     state.currentTime = time;
     this.player.ref.seek(time);
-    this.setState(state);
+    this.setState({ ...state });
   }
 
   /**
@@ -819,10 +814,11 @@ export default class VideoPlayer extends Component {
        * When panning, update the seekbar position, duh.
        */
       onPanResponderMove: (evt, gestureState) => {
-        const position = this.state.seekerOffset + gestureState.dx;
+        let position = this.state.seekerOffset + gestureState.dx;
+        position = this.constrainToSeekerMinMax(position);
         this.setSeekerPosition(position);
         let state = this.state;
-        console.log('onPanResponderMove')
+        console.log('onPanResponderMove',position)
 
         if (this.player.scrubbingTimeStep > 0 && !state.loading && !state.scrubbing) {
           const time = this.calculateTimeFromSeekerPosition();
