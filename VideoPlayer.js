@@ -264,13 +264,18 @@ export default class VideoPlayer extends Component {
     this.setState({
       currentTime: 0,
       seeking: false,
-      paused: true,
       seekerFillWidth: 0,
       seekerPosition: 0,
       seekerOffset: 0,
     });
+    setTimeout(() => {
+      this.setState({
+        paused: true,
+      });
+
+    }, 100);
     //播放结束回调
-    typeof this.events.onEnd === 'function' && this.events.onEnd();
+    typeof this.props.onEnd === 'function' && this.props.onEnd();
   }
 
   /**
@@ -616,8 +621,8 @@ export default class VideoPlayer extends Component {
   constrainToSeekerMinMax(val = 0) {
     if (val <= 0) {
       return 0;
-    } else if (val >= this.player.seekerWidth) {
-      return this.player.seekerWidth;
+    } else if (val >= this.player.seekerWidth-1) {
+      return this.player.seekerWidth-1;
     }
     return val;
   }
